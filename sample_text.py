@@ -14,7 +14,6 @@ class TestSample(object):
     def user_data(self):
         return USER_DATA
 
-    @pytest.mark.order(1)
     def test_request_get(self, user_id):
         res = request_logic.send_request_get(user_id)
         assert res['id'] == user_id
@@ -23,14 +22,12 @@ class TestSample(object):
         assert res['Address'] == 'Тверь'
         assert res['Car'] == 'Волга'
 
-    @pytest.mark.order(2)
     def test_request_post(self, user_data):
         res = request_logic.send_request_post(user_data)
         assert res.status_code == 200
         assert request_logic.send_request_get(res.text)['id'] == res.text
         request_logic.send_request_delete(res.text)
 
-    @pytest.mark.order(3)
     def test_request_delete(self, user_data):
         res = request_logic.send_request_post(user_data)
         assert request_logic.send_request_delete(res.text).status_code == 200
